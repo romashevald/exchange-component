@@ -1,21 +1,13 @@
-import stripDiacritics from "./stripDiacritics";
-import trim from "./trim";
+'use strict';
 
 const isValid = value => {
 	return typeof (value) !== 'undefined' && value !== null && value !== '';
 };
 
 const filterOptions = (options, filterValue, excludeOptions, props) => {
-	if (props.ignoreAccents) {
-		filterValue = stripDiacritics(filterValue);
-	}
 
 	if (props.ignoreCase) {
 		filterValue = filterValue.toLowerCase();
-	}
-
-	if (props.trimFilter) {
-		filterValue = trim(filterValue);
 	}
 
 	if (excludeOptions) excludeOptions = excludeOptions.map(i => i[props.valueKey]);
@@ -36,11 +28,6 @@ const filterOptions = (options, filterValue, excludeOptions, props) => {
 
 		let valueTest = hasValue ? String(value) : null;
 		let labelTest = hasLabel ? String(label) : null;
-
-		if (props.ignoreAccents) {
-			if (valueTest && props.matchProp !== 'label') valueTest = stripDiacritics(valueTest);
-			if (labelTest && props.matchProp !== 'value') labelTest = stripDiacritics(labelTest);
-		}
 
 		if (props.ignoreCase) {
 			if (valueTest && props.matchProp !== 'label') valueTest = valueTest.toLowerCase();

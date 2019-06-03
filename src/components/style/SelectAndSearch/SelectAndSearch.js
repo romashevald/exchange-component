@@ -20,7 +20,7 @@ import {
     shouldShowValue,
     stringifyValue
     , stringOrNode
-} from "../../../utils";
+} from "./utils/index";
 
 let instanceId = 1;
 
@@ -486,7 +486,7 @@ class Select extends React.Component {
             this.blurInput();
         }
         if (this.props.simpleValue && value) {
-            value =  value[this.props.valueKey];
+            value = value[this.props.valueKey];
         }
         if (this.props.onChange) {
             this.props.onChange(value);
@@ -500,18 +500,18 @@ class Select extends React.Component {
             this.hasScrolledToOption = false;
         }
         const updatedValue = this.props.onSelectResetsInput ? '' : this.state.inputValue;
-            this.setState({
-                inputValue: this.handleInputValueChange(updatedValue),
-                isOpen: !this.props.closeOnSelect,
-                isPseudoFocused: this.state.isFocused,
-            }, () => {
-                this.setValue(value);
-            });
+        this.setState({
+            inputValue: this.handleInputValueChange(updatedValue),
+            isOpen: !this.props.closeOnSelect,
+            isPseudoFocused: this.state.isFocused,
+        }, () => {
+            this.setValue(value);
+        });
     }
 
     addValue(value) {
         let valueArray = this.getValueArray(this.props.value);
-        const visibleOptions = this._visibleOptions.filter(val => !val.disabled);
+        const visibleOptions = this._visibleOptions;
         const lastValueIndex = visibleOptions.indexOf(value);
         this.setValue(valueArray.concat(value));
         if (visibleOptions.length - 1 === lastValueIndex) {
@@ -526,7 +526,7 @@ class Select extends React.Component {
     popValue() {
         let valueArray = this.getValueArray(this.props.value);
         if (!valueArray.length) return;
-        this.setValue( null);
+        this.setValue(null);
     }
 
     getResetValue() {
@@ -569,8 +569,7 @@ class Select extends React.Component {
 
     focusAdjacentOption(dir) {
         const options = this._visibleOptions
-            .map((option, index) => ({option, index}))
-            .filter(option => !option.option.disabled);
+            .map((option, index) => ({option, index}));
         this._scrollToFocusedOptionOnUpdate = true;
         if (!this.state.isOpen) {
             const newState = {
@@ -639,15 +638,6 @@ class Select extends React.Component {
         }
     }
 
-    renderLoading() {
-        if (!this.props.isLoading) return;
-        return (
-            <span className="Select-loading-zone" aria-hidden="true">
-				<span className="Select-loading"/>
-			</span>
-        );
-    }
-
     renderValue(valueArray, isOpen) {
         let renderLabel = this.props.valueRenderer || this.getOptionLabel;
         let ValueComponent = this.props.valueComponent;
@@ -656,7 +646,7 @@ class Select extends React.Component {
             return showPlaceholder ? <div className="Select-placeholder">{this.props.placeholder}</div> : null;
         }
         let onClick = this.props.onValueClick ? this.handleValueClick : null;
-   if (shouldShowValue(this.state, this.props)) {
+        if (shouldShowValue(this.state, this.props)) {
             if (isOpen) onClick = null;
             return (
                 <ValueComponent
@@ -767,23 +757,17 @@ class Select extends React.Component {
         const filterValue = this.state.inputValue;
         const flatOptions = this._flatOptions;
         if (this.props.filterOptions) {
-            // Maintain backwards compatibility with boolean attribute
-            const filterOptions = typeof this.props.filterOptions === 'function'
-                ? this.props.filterOptions
-                : defaultFilterOptions;
 
-            return filterOptions(
+            return this.props.filterOptions(
                 flatOptions,
                 filterValue,
                 excludeOptions,
                 {
                     filterOption: this.props.filterOption,
-                    ignoreAccents: this.props.ignoreAccents,
                     ignoreCase: this.props.ignoreCase,
                     labelKey: this.props.labelKey,
                     matchPos: this.props.matchPos,
                     matchProp: this.props.matchProp,
-                    trimFilter: this.props.trimFilter,
                     valueKey: this.props.valueKey,
                 }
             );
@@ -922,7 +906,7 @@ class Select extends React.Component {
 
         const valueKey = this.props.valueKey;
         let focusedOption = this.state.focusedOption || selectedOption;
-        if (focusedOption && !focusedOption.disabled) {
+        if (focusedOption ) {
             let focusedOptionIndex = -1;
             options.some((option, index) => {
                 const isOptionEqual = option[valueKey] === focusedOption[valueKey];
@@ -936,9 +920,6 @@ class Select extends React.Component {
             }
         }
 
-        for (let i = 0; i < options.length; i++) {
-            if (!options[i].disabled) return i;
-        }
         return null;
     }
 
@@ -972,7 +953,7 @@ class Select extends React.Component {
 
     render() {
         let valueArray = this.getValueArray(this.props.value);
-        this._visibleOptions = this.filterFlatOptions(this.props.multi && this.props.removeSelected ? valueArray : null);
+        this._visibleOptions = this.filterFlatOptions(null);
         let options = this.unflattenOptions(this._visibleOptions);
         let isOpen = typeof this.props.isOpen === 'boolean' ? this.props.isOpen : this.state.isOpen;
         if (!options.length && valueArray.length && !this.state.inputValue) isOpen = false;
@@ -991,7 +972,6 @@ class Select extends React.Component {
             'is-open': isOpen,
             'is-pseudo-focused': this.state.isPseudoFocused,
             'is-searchable': this.props.searchable,
-            'Select--rtl': this.props.rtl,
             'Select--single': true,
         });
 
@@ -1013,7 +993,6 @@ class Select extends React.Component {
 						{this.renderValue(valueArray, isOpen)}
                         {this.renderInput(valueArray, focusedOptionIndex)}
 					</span>
-                    {this.renderLoading()}
                     {this.renderArrow()}
                 </div>
                 {isOpen ? this.renderOuter(options, valueArray, focusedOption) : null}
@@ -1037,7 +1016,6 @@ Select.propTypes = {
     filterOption: PropTypes.func,         // method to filter a single option (option, filterString)
     filterOptions: PropTypes.any,         // boolean to enable default filtering or function to filter the options array ([options], filterString, [values])
     id: PropTypes.string, 				        // html id to set on the input element for accessibility or tests
-    ignoreAccents: PropTypes.bool,        // whether to strip diacritics when filtering
     ignoreCase: PropTypes.bool,           // whether to perform case-insensitive filtering
     inputProps: PropTypes.object,         // custom attributes for the Input
     inputRenderer: PropTypes.func,        // returns a custom input component
@@ -1075,17 +1053,15 @@ Select.propTypes = {
     options: PropTypes.array,             // array of options
     pageSize: PropTypes.number,           // number of entries to page when using page up/down keys
     placeholder: stringOrNode,            // field placeholder, displayed when there's no value
-    removeSelected: PropTypes.bool,       // whether the selected option is removed from the dropdown on multi selects
+
     renderInvalidValues: PropTypes.bool,  // boolean to enable rendering values that do not match any options
     resetValue: PropTypes.any,            // value to use when you clear the control
-    rtl: PropTypes.bool, 									// set to true in order to use react-select in right-to-left direction
     scrollMenuIntoView: PropTypes.bool,   // boolean to enable the viewport to shift so that the full menu fully visible when engaged
     searchable: PropTypes.bool,           // whether to enable searching feature or not
     simpleValue: PropTypes.bool,          // pass the value to onChange as a simple value (legacy pre 1.0 mode), defaults to false
     style: PropTypes.object,              // optional style to apply to the control
     tabIndex: PropTypes.string,           // optional tab index of the control
     tabSelectsValue: PropTypes.bool,      // whether to treat tabbing out while focused to be value selection
-    trimFilter: PropTypes.bool,           // whether to trim whitespace around filter value
     value: PropTypes.any,                 // initial field value
     valueComponent: PropTypes.func,       // value component to render
     valueKey: PropTypes.string,           // path of the label value in option objects
@@ -1099,7 +1075,6 @@ Select.defaultProps = {
     delimiter: ',',
     dropdownComponent: Dropdown,
     filterOptions: defaultFilterOptions,
-    ignoreAccents: true,
     ignoreCase: true,
     inputProps: {},
     isLoading: false,
@@ -1118,13 +1093,11 @@ Select.defaultProps = {
     optionGroupComponent: OptionGroup,
     pageSize: 5,
     placeholder: 'Select...',
-    removeSelected: true,
-    rtl: false,
+
     scrollMenuIntoView: true,
     searchable: true,
     simpleValue: false,
     tabSelectsValue: true,
-    trimFilter: true,
     valueComponent: Value,
     valueKey: 'value',
 };

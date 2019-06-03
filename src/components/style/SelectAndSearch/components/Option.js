@@ -61,13 +61,7 @@ class Option extends React.Component {
 		const { option, instancePrefix, optionIndex } = this.props;
 		const className = classNames(this.props.className, option.className);
 
-		return option.disabled ? (
-			<div className={className}
-				onMouseDown={blockEvent}
-				onClick={blockEvent}>
-				{this.props.children}
-			</div>
-		) : (
+		return (
 			<div className={className}
 				style={option.style}
 				role="option"
@@ -90,7 +84,6 @@ Option.propTypes = {
 	children: PropTypes.node,
 	className: PropTypes.string,             // className (based on mouse position)
 	instancePrefix: PropTypes.string.isRequired,  // unique prefix for the ids (used for aria)
-	isDisabled: PropTypes.bool,              // the option is disabled
 	isFocused: PropTypes.bool,               // the option is focused
 	isSelected: PropTypes.bool,              // the option is selected
 	onFocus: PropTypes.func,                 // method to handle mouseEnter on option element

@@ -58,11 +58,6 @@
 		color: $select-option-focused-color;
 	}
 
-	&.is-disabled {
-		color: $select-option-disabled-color;
-		cursor: default;
-	}
-
 }
 
 
