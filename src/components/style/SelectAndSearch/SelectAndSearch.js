@@ -230,7 +230,6 @@ class Select extends React.Component {
             // Call focus() again here to be safe.
             this.focus();
 
-            let input = this.input;
             let toOpen = true;
 
             // if the input is focused, ensure the menu is open
@@ -262,7 +261,7 @@ class Select extends React.Component {
         } else {
             // If the menu isn't open, let the event bubble to the main handleMouseDown
             this.setState({
-                isOpen: true,
+                isOpen: true
             });
         }
     }
@@ -727,7 +726,7 @@ class Select extends React.Component {
         );
     }
 
-    renderArrow() {
+    renderArrow(valueArray, focusedOptionIndex) {
         if (!this.props.arrowRenderer) return;
 
         const onMouseDown = this.handleMouseDownOnArrow;
@@ -989,7 +988,7 @@ class Select extends React.Component {
 						{this.renderValue(valueArray, isOpen)}
                         {isOpen ? this.renderInput(valueArray, focusedOptionIndex) : null}
 					</span>
-                    {this.renderArrow()}
+                    {this.renderArrow(isOpen, valueArray, focusedOptionIndex)}
                 </div>
                 {isOpen ? this.renderOuter(options, valueArray, focusedOption) : null}
             </div>
