@@ -2,7 +2,6 @@
 
 import React, {Component} from 'react';
 import InputText from "./style/InputText";
-import Select from "./style/Select";
 import {toastError} from "../libs/toast";
 import "../styles/styles.scss";
 import SelectAndSearch from "./style/SelectAndSearch/SelectAndSearch";
