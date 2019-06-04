@@ -43,34 +43,43 @@ class App extends Component {
                 <header className="header">
 
                     <div>
-                        <div>
-                            You sent
-                        </div>
-                        <div>
-                            <InputText value={sendAmount}
-                                       name='sendAmount'
-                                       onChange={this._handleChange}/>
-                        </div>
-                        <div>
-                            <SelectAndSearch name="currenciesFrom"
-                                             value={currenciesFrom}
-                                             onChange={this._handleChangeSelectFrom}
-                                             options={optionsCurrencies}/>
+                        <div className="block-from">
+
+                            <div className="input-text">
+                                <div className="text-sent">
+                                    You sent
+                                </div>
+
+                                <div className="input-sent">
+                                    <InputText value={sendAmount}
+                                               name='sendAmount'
+                                               onChange={this._handleChange}/>
+                                </div>
+
+                            </div>
+
+                            <div className="select-from">
+                                <SelectAndSearch name="currenciesFrom"
+                                                 value={currenciesFrom}
+                                                 onChange={this._handleChangeSelectFrom}
+                                                 options={optionsCurrencies}/>
+                            </div>
                         </div>
 
-                        <div>
-                            You Get
-                        </div>
-                        <div>
-                            <InputText readOnly value={getAmount}/>
-                        </div>
-                        <div>
-                            <SelectAndSearch name="currenciesTo"
-                                             value={currenciesTo}
-                                             onChange={this._handleChangeSelectTo}
-                                             options={optionsCurrencies}/>
 
-                        </div>
+                        {/*<div>*/}
+                        {/*You Get*/}
+                        {/*</div>*/}
+                        {/*<div>*/}
+                        {/*<InputText readOnly value={getAmount}/>*/}
+                        {/*</div>*/}
+                        {/*<div>*/}
+                        {/*<SelectAndSearch name="currenciesTo"*/}
+                        {/*value={currenciesTo}*/}
+                        {/*onChange={this._handleChangeSelectTo}*/}
+                        {/*options={optionsCurrencies}/>*/}
+
+                        {/*</div>*/}
                     </div>
                 </header>
             </div>

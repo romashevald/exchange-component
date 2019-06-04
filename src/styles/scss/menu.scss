@@ -25,14 +25,12 @@
 	-webkit-overflow-scrolling: touch;
 }
 
-
 // wrapper
 
 .Select-menu {
 	max-height: ($select-menu-max-height - 2px);
 	overflow-y: auto;
 }
-
 
 // options
 
@@ -59,7 +57,6 @@
 	}
 
 }
-
 
 // no results
 

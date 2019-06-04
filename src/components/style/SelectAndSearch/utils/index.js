@@ -55,10 +55,10 @@ export const shouldShowValue = (state, props) => {
 };
 
 export const shouldShowPlaceholder = (state, props, isOpen) => {
-    const {inputValue, isPseudoFocused, isFocused} = state;
-    const {onSelectResetsInput} = props;
-
-    return !inputValue || !onSelectResetsInput && !isOpen && !isPseudoFocused && !isFocused;
+    // const {inputValue, isPseudoFocused, isFocused} = state;
+    // const {onSelectResetsInput} = props;
+    //
+    // return !inputValue || !onSelectResetsInput && !isOpen && !isPseudoFocused && !isFocused;
 };
 
 export const pFunc = PropTypes.func;

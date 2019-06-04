@@ -2,7 +2,6 @@
 // Control
 // ------------------------------
 
-@import 'spinner';
 @import 'mixins';
 @import 'select';
 
@@ -114,7 +113,7 @@
 	outline: none;
 	overflow: hidden;
 	position: relative;
-	width: 100%;
+	width: $select-menu-max-width;
 
 	&:hover {
 		box-shadow: $select-input-hover-box-shadow;
@@ -163,7 +162,7 @@
 		cursor: default;
 		display: inline-block;
 		font-family: inherit;
-		font-size: inherit;
+		//font-size: inherit;
 		// height: $select-input-internal-height;
 		margin: 0;
 		outline: none;
@@ -176,7 +175,6 @@
 			cursor: text;
 		}
 	}
-
 }
 
 // fake input
@@ -193,33 +191,6 @@
 	vertical-align: middle;
 	width: $select-loading-size;
 }
-.Select-loading {
-	@include Select-spinner($select-loading-size, $select-loading-color-bg, $select-loading-color);
-	vertical-align: middle;
-}
-
-
-// the little cross that clears the field
-
-.Select-clear-zone {
-	@include animation( Select-animation-fadeIn 200ms );
-	color: $select-clear-color;
-	cursor: pointer;
-	display: table-cell;
-	position: relative;
-	text-align: center;
-	vertical-align: middle;
-	width: $select-clear-width;
-
-	&:hover {
-		color: $select-clear-hover-color;
-	}
-}
-.Select-clear {
-	display: inline-block;
-	font-size: $select-clear-size;
-	line-height: 1;
-}
 
 .Select .Select-aria-only {
 	position: absolute;
@@ -231,7 +202,6 @@
 	overflow: hidden;
 	float: left;
 }
-
 
 // arrow indicator
 
@@ -256,19 +226,3 @@
 	position: relative;
 }
 
-
-
-
-// Animation
-// ------------------------------
-
-// fade in
-
-@-webkit-keyframes Select-animation-fadeIn {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
-@keyframes Select-animation-fadeIn {
-	from { opacity: 0; }
-	to { opacity: 1; }
-}
