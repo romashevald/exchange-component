@@ -7,6 +7,8 @@
 
 .Select {
 	position: relative;
+
+	// disable some browser-specific behaviours that break the input
 	input::-webkit-contacts-auto-fill-button,
 	input::-webkit-credentials-auto-fill-button {
 		display: none !important;
@@ -94,7 +96,10 @@
 	.Select-arrow-zone:hover > .Select-arrow {
 		border-top-color: $select-arrow-color-hover;
 	}
-
+	&.Select--rtl {
+		direction: rtl;
+		text-align: right;
+	}
 }
 
 // base
@@ -113,7 +118,7 @@
 	outline: none;
 	overflow: hidden;
 	position: relative;
-	width: $select-menu-max-width;
+	width: 100%;
 
 	&:hover {
 		box-shadow: $select-input-hover-box-shadow;
@@ -162,7 +167,7 @@
 		cursor: default;
 		display: inline-block;
 		font-family: inherit;
-		//font-size: inherit;
+		font-size: inherit;
 		// height: $select-input-internal-height;
 		margin: 0;
 		outline: none;
@@ -192,6 +197,8 @@
 	width: $select-loading-size;
 }
 
+
+
 .Select .Select-aria-only {
 	position: absolute;
 	display: inline-block;
@@ -203,17 +210,23 @@
 	float: left;
 }
 
+
 // arrow indicator
 
 .Select-arrow-zone {
 	cursor: pointer;
 	display: table-cell;
 	position: relative;
+	height: 47px;
 	text-align: center;
 	vertical-align: middle;
 	width: ($select-arrow-width * 5);
 	padding-right: $select-arrow-width;
 
+	.Select--rtl & {
+		padding-right: 0;
+		padding-left: $select-arrow-width;
+	}
 }
 
 .Select-arrow {

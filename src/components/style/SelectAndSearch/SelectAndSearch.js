@@ -233,10 +233,6 @@ class Select extends React.Component {
             let input = this.input;
             let toOpen = true;
 
-            // clears the value so that the cursor will be at the end of input when the component re-renders
-            input.value = '';
-
-
             // if the input is focused, ensure the menu is open
             this.setState({
                 isOpen: toOpen,
@@ -642,8 +638,7 @@ class Select extends React.Component {
         let renderLabel = this.props.valueRenderer || this.getOptionLabel;
         let ValueComponent = this.props.valueComponent;
         if (!valueArray.length) {
-            const showPlaceholder = shouldShowPlaceholder(this.state, this.props, isOpen);
-            return showPlaceholder ? <div className="Select-placeholder">{this.props.placeholder}</div> : null;
+            return null;
         }
         let onClick = this.props.onValueClick ? this.handleValueClick : null;
         if (shouldShowValue(this.state, this.props)) {
@@ -671,7 +666,7 @@ class Select extends React.Component {
         });
 
         let value = this.state.inputValue;
-        if (value && !this.props.onSelectResetsInput && !this.state.isFocused) {
+        if (value && !this.props.onSelectResetsInput) {
             // it hides input value when it is not focused and was not reset on select
             value = '';
         }
@@ -906,7 +901,7 @@ class Select extends React.Component {
 
         const valueKey = this.props.valueKey;
         let focusedOption = this.state.focusedOption || selectedOption;
-        if (focusedOption ) {
+        if (focusedOption) {
             let focusedOptionIndex = -1;
             options.some((option, index) => {
                 const isOptionEqual = option[valueKey] === focusedOption[valueKey];
@@ -952,6 +947,7 @@ class Select extends React.Component {
     }
 
     render() {
+        const {isFocused} = this.state;
         let valueArray = this.getValueArray(this.props.value);
         this._visibleOptions = this.filterFlatOptions(null);
         let options = this.unflattenOptions(this._visibleOptions);
@@ -991,7 +987,7 @@ class Select extends React.Component {
                 >
 					<span className="Select-multi-value-wrapper" id={this._instancePrefix + '-value'}>
 						{this.renderValue(valueArray, isOpen)}
-                        {this.renderInput(valueArray, focusedOptionIndex)}
+                        {isOpen ? this.renderInput(valueArray, focusedOptionIndex) : null}
 					</span>
                     {this.renderArrow()}
                 </div>

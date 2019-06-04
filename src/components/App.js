@@ -5,6 +5,8 @@ import InputText from "./style/InputText";
 import {toastError} from "../libs/toast";
 import "../styles/styles.scss";
 import SelectAndSearch from "./style/SelectAndSearch/SelectAndSearch";
+import {restrictDouble} from "../libs/utils";
+import {UPDATE_PERIOD_300000} from "../libs/constants";
 
 class App extends Component {
     constructor(props) {
@@ -18,7 +20,9 @@ class App extends Component {
             , optionsCurrencies: []
 
         };
-        this._toastId = null;
+
+        this._updateTimeout = null;
+        this._updateRequired = true;
 
         this._getExchangeAmount = this._getExchangeAmount.bind(this);
     }
@@ -27,10 +31,15 @@ class App extends Component {
         this._getCurrencies();
     }
 
+    componentWillUnmount() {
+        this._stopUpdate();
+    }
+
     componentDidUpdate(prevProps, prevState) {
-        if (prevState.sendAmount !== this.state.sendAmount
-            || prevState.currenciesFrom.value !== this.state.currenciesFrom.value
-            || prevState.currenciesTo !== this.state.currenciesTo) {
+        const {sendAmount, currenciesFrom, currenciesTo} = this.state;
+        if (prevState.sendAmount !== sendAmount
+            || prevState.currenciesFrom.value !== currenciesFrom.value
+            || prevState.currenciesTo !== currenciesTo) {
             this._getExchangeAmount();
         }
     }
@@ -42,7 +51,8 @@ class App extends Component {
             <div className="app">
                 <header className="header">
 
-                    <div>
+                    <div className='flex-box'>
+
                         <div className="block-from">
 
                             <div className="input-text">
@@ -53,6 +63,11 @@ class App extends Component {
                                 <div className="input-sent">
                                     <InputText value={sendAmount}
                                                name='sendAmount'
+                                               onBlur={(e) => {
+                                                   if (isNaN(e)) {
+                                                       this._addValueByState(e);
+                                                   }
+                                               }}
                                                onChange={this._handleChange}/>
                                 </div>
 
@@ -67,19 +82,28 @@ class App extends Component {
                         </div>
 
 
-                        {/*<div>*/}
-                        {/*You Get*/}
-                        {/*</div>*/}
-                        {/*<div>*/}
-                        {/*<InputText readOnly value={getAmount}/>*/}
-                        {/*</div>*/}
-                        {/*<div>*/}
-                        {/*<SelectAndSearch name="currenciesTo"*/}
-                        {/*value={currenciesTo}*/}
-                        {/*onChange={this._handleChangeSelectTo}*/}
-                        {/*options={optionsCurrencies}/>*/}
+                        <div className="block-from">
 
-                        {/*</div>*/}
+                            <div className="input-text">
+                                <div className="text-sent">
+                                    You Get
+                                </div>
+
+                                <div className="input-sent">
+                                    <InputText readOnly value={getAmount}/>
+                                </div>
+
+                            </div>
+
+                            <div className="select-from">
+                                <SelectAndSearch name="currenciesTo"
+                                                 value={currenciesTo}
+                                                 onChange={this._handleChangeSelectTo}
+                                                 options={optionsCurrencies}/>
+                            </div>
+                        </div>
+
+
                     </div>
                 </header>
             </div>
@@ -90,6 +114,14 @@ class App extends Component {
         this.setState({currenciesFrom: currenciesFrom.value});
     };
 
+    _addValueByState = (e) => {
+        const el = e.target;
+        let {name, value} = el;
+        if (String(value).length <= 0) {
+            this.setState({[name]: 1});
+        }
+    };
+
     _handleChangeSelectTo = (currenciesTo) => {
         this.setState({currenciesTo: currenciesTo.value});
     };
@@ -97,7 +129,7 @@ class App extends Component {
     _handleChange = e => {
         const el = e.target;
         let {name, value} = el;
-        this.setState({[name]: value});
+        this.setState({[name]: restrictDouble(value)});
     };
 
     _getCurrencies = () => {
@@ -106,21 +138,34 @@ class App extends Component {
                 return response.json()
             })
             .then((responseJson) => {
+                this._setUpdateTimeout(UPDATE_PERIOD_300000);
                 this._processingResponse(responseJson);
-                // throw 'err';
-                // return responseJson.Answer;
             }).catch((er) => {
             console.log('====err Currencies', er);
-            this._toastId = toastError(er, {autoClose: 5000}); //TODO
+            toastError(er, {autoClose: 5000}); //TODO
         });
     };
+
+    _stopUpdate() {
+        if (this._updateTimeout !== null) {
+            clearTimeout(this._updateTimeout);
+            this._updateTimeout = null;
+        }
+        this._updateRequired = false;
+    }
+
+    _setUpdateTimeout(delay) {
+        if (this._updateRequired) {
+            this._updateTimeout = setTimeout(this._getCurrencies, delay);
+        }
+    }
 
     _processingResponse = responseList => {
         const optionsCurrencies = [];
         responseList.forEach((v, i) => {
             optionsCurrencies.push({
                 value: responseList[i].ticker
-                , label: responseList[i].name
+                , label: responseList[i].ticker
             });
         });
         this.setState({
@@ -143,7 +188,7 @@ class App extends Component {
             }).catch(er => {
             console.log('====err Amount', er);
 
-            this._toastId = toastError(er, {autoClose: 5000});//TODO
+            toastError(er, {autoClose: 5000});//TODO
         });
     }
 

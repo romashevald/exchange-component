@@ -30,26 +30,51 @@ code {
 
 .block-from {
   display: flex;
-  width: 400px;
+  width: 340px;
   height: 50px;
   font-size: inherit;
-  //position: relative;
+  border: 1px solid $select-input-border-color;
+  margin: 2rem;
+}
+
+.flex-box {
+  display: flex;
+  flex-direction: column;
+
 }
 
 .input-text {
-  width: $select-menu-max-width-main;
+  text-align: left;
+
+  height: 50px;
+  width: 300px;
 
   .text-sent {
-    height: $select-input-height;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+
+    height: 20px;
+    color: #282c34;
+    background: rgb(255, 255, 255);
+    font-size: 1rem;
   }
 
   .input-sent {
-    height: $select-input-height;
+    height: 30px;
   }
-
 }
 
 .select-from {
-  width: $select-menu-max-width;
   height: 50px;
+}
+
+input[type=text] {
+  font-size: calc(3px + 2vmin);
+
+  border: 1px solid rgb(255, 255, 255);
+  width: 100%;
+  height: inherit;
+  display: inline-block;
+  box-sizing: border-box;
 }
