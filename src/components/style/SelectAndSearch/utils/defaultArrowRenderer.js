@@ -1,17 +1,19 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+'use strict';
 
-const arrowRenderer = ({ onMouseDown }) => {
-	return (
-		<span
-			className="Select-arrow"
-			onMouseDown={onMouseDown}
-		/>
-	);
+import React from 'react';
+import {pFunc, UI} from "../../../../libs/constants";
+
+const arrowRenderer = ({onMouseDown}) => {
+    return (
+        <span
+            className={UI.SELECT_ARROW}
+            onMouseDown={onMouseDown}
+        />
+    );
 };
 
 arrowRenderer.propTypes = {
-	onMouseDown: PropTypes.func,
+    onMouseDown: pFunc,
 };
 
 export default arrowRenderer;

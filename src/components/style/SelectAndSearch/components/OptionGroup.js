@@ -1,8 +1,8 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import {pAny, pNode, pObjectRequired, pString, UI} from "../../../../libs/constants";
 
 class OptionGroup extends React.Component {
     blockEvent = (event) => {
@@ -60,20 +60,20 @@ class OptionGroup extends React.Component {
                  onTouchMove={this.handleTouchMove}
                  onTouchEnd={this.handleTouchEnd}
                  title={option.title}>
-                <div className="Select-option-group-label">
+                <div className={UI.SELECT_OPTION_GROUP_LABEL}>
                     {this.props.label}
                 </div>
                 {this.props.children}
             </div>
         );
     }
-};
+}
 
 OptionGroup.propTypes = {
-    children: PropTypes.any,
-    className: PropTypes.string,             // className (based on mouse position)
-    label: PropTypes.node,                   // the heading to show above the child options
-    option: PropTypes.object.isRequired,     // object that is base for that option group
+    children: pAny,
+    className: pString,             // className (based on mouse position)
+    label: pNode,                   // the heading to show above the child options
+    option: pObjectRequired     // object that is base for that option group
 };
 
 export default OptionGroup;

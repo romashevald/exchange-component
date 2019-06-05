@@ -1,8 +1,8 @@
 'use strict';
 
 import classNames from 'classnames';
-import PropTypes from 'prop-types';
 import React from 'react';
+import {pFunc, pNode, pObjectRequired, pString, UI} from "../../../../libs/constants";
 
 class Value extends React.Component {
     handleMouseDown = (event) => {
@@ -51,7 +51,7 @@ class Value extends React.Component {
 
     render() {
         return (
-            <div className={classNames('Select-value', this.props.value.className)}
+            <div className={classNames([UI.SELECT_VALUE], this.props.value.className)}
                  style={this.props.value.style}
                  title={this.props.value.title}
             >
@@ -62,10 +62,10 @@ class Value extends React.Component {
 }
 
 Value.propTypes = {
-    children: PropTypes.node,
-    id: PropTypes.string,                   // Unique id for the value - used for aria
-    onClick: PropTypes.func,                // method to handle click on value label
-    value: PropTypes.object.isRequired,     // the option object for this value
+    children: pNode,
+    id: pString,                   // Unique id for the value - used for aria
+    onClick: pFunc,                // method to handle click on value label
+    value: pObjectRequired     // the option object for this value
 };
 
 export default Value;

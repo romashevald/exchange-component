@@ -30,52 +30,49 @@ code {
 
 .block-from {
   display: flex;
-  width: 340px;
-  height: 50px;
+  width: $forms-width;
+  height: $forms-height;
   font-size: inherit;
   border: 1px solid $select-input-border-color;
-  margin: 2rem;
+  margin: 1rem;
   border-radius: $select-input-border-radius;
-
 }
 
 .flex-box {
   display: flex;
   flex-direction: column;
-
 }
 
-.input-text {
+.input-with-header {
   text-align: left;
 
-  height: 50px;
-  width: 300px;
+  height: $forms-height;
+  width: $forms-input-with-header;
 
-  .text-sent {
+  .text-header {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
 
-    height: 20px;
+    height: $forms-height-text-header;
     color: #282c34;
-    background: rgb(255, 255, 255);
+    background: $forms-color-background-color;
     font-size: 1rem;
   }
 
-  .input-sent {
-    height: 30px;
+  .num-input {
+    height: $forms-height-num-input;
   }
 }
 
-.select-from {
-  background: rgb(255, 255, 255);
-  height: 50px;
+.select-form {
+  background: $forms-color-background-color;
+  height: $forms-height;
 }
 
 input[type=text] {
   font-size: calc(3px + 2vmin);
-
-  border: 1px solid rgb(255, 255, 255);
+  border: 1px solid $forms-color-background-color;
   width: 100%;
   height: inherit;
   display: inline-block;

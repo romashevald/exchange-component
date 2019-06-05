@@ -1,19 +1,17 @@
 'use strict';
 
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import {pNumberOrString, pObject, pString} from "../../libs/constants";
 
 export default class InputText extends Component {
     static propTypes = {
-        className: PropTypes.string
-        , type: PropTypes.string
-        , value: PropTypes.oneOfType([
-            PropTypes.string, PropTypes.number
-        ])
+        className: pString
+        , type: pString
+        , value: pNumberOrString
     };
 
     static contextTypes = {
-        form: PropTypes.object
+        form: pObject
     };
 
     constructor(props, context) {
@@ -39,7 +37,7 @@ export default class InputText extends Component {
         } = this.props;
 
 
-        return  <input
+        return <input
             type={type}
             autoComplete="off"
             {...attrs}

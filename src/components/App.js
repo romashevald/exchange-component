@@ -2,23 +2,20 @@
 
 import React, {Component} from 'react';
 import InputText from "./style/InputText";
-import {toastError} from "../libs/toast";
-import "../styles/styles.scss";
 import SelectAndSearch from "./style/SelectAndSearch/SelectAndSearch";
 import {restrictDouble} from "../libs/utils";
-import {UPDATE_PERIOD_300000} from "../libs/constants";
+import {UI, UPDATE_PERIOD_300000} from "../libs/constants";
+import "../styles/styles.scss";
 
 class App extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
             sendAmount: 1
             , getAmount: ''
             , currenciesFrom: ''
             , currenciesTo: ''
             , optionsCurrencies: []
-
         };
 
         this._updateTimeout = null;
@@ -48,19 +45,19 @@ class App extends Component {
         const {sendAmount, getAmount, currenciesFrom, currenciesTo, optionsCurrencies} = this.state;
 
         return (
-            <div className="app">
-                <header className="header">
+            <div className={UI.APP}>
+                <header className={UI.HEADER}>
 
-                    <div className='flex-box'>
+                    <div className={UI.FLEX_BOX}>
 
-                        <div className="block-from">
+                        <div className={UI.BLOCK_FORM}>
 
-                            <div className="input-text">
-                                <div className="text-sent">
-                                    You sent
+                            <div className={UI.INPUT_WITH_HEADER}>
+                                <div className={UI.TEXT_HEADER}>
+                                    You Send
                                 </div>
 
-                                <div className="input-sent">
+                                <div className={UI.NUM_INPUT}>
                                     <InputText value={sendAmount}
                                                name='sendAmount'
                                                onBlur={(e) => {
@@ -73,7 +70,7 @@ class App extends Component {
 
                             </div>
 
-                            <div className="select-from">
+                            <div className={UI.SELECT_FORM}>
                                 <SelectAndSearch name="currenciesFrom"
                                                  value={currenciesFrom}
                                                  onChange={this._handleChangeSelectFrom}
@@ -82,27 +79,26 @@ class App extends Component {
                         </div>
 
 
-                        <div className="block-from">
+                        <div className={UI.BLOCK_FORM}>
 
-                            <div className="input-text">
-                                <div className="text-sent">
+                            <div className={UI.INPUT_WITH_HEADER}>
+                                <div className={UI.TEXT_HEADER}>
                                     You Get
                                 </div>
 
-                                <div className="input-sent">
+                                <div className={UI.NUM_INPUT}>
                                     <InputText readOnly value={getAmount}/>
                                 </div>
 
                             </div>
 
-                            <div className="select-from">
+                            <div className={UI.SELECT_FORM}>
                                 <SelectAndSearch name="currenciesTo"
                                                  value={currenciesTo}
                                                  onChange={this._handleChangeSelectTo}
                                                  options={optionsCurrencies}/>
                             </div>
                         </div>
-
 
                     </div>
                 </header>
@@ -117,7 +113,7 @@ class App extends Component {
     _addValueByState = (e) => {
         const el = e.target;
         let {name, value} = el;
-        if (String(value).length <= 0) {
+        if (String(value).length === 0) {
             this.setState({[name]: 1});
         }
     };
@@ -142,7 +138,6 @@ class App extends Component {
                 this._processingResponse(responseJson);
             }).catch((er) => {
             console.log('====err Currencies', er);
-            toastError(er, {autoClose: 5000}); //TODO
         });
     };
 
@@ -161,11 +156,13 @@ class App extends Component {
     }
 
     _processingResponse = responseList => {
+        console.log('====responseList', responseList);
         const optionsCurrencies = [];
         responseList.forEach((v, i) => {
             optionsCurrencies.push({
                 value: responseList[i].ticker
                 , label: responseList[i].ticker
+                , fullLabel: `${responseList[i].ticker}   ${responseList[i].name}`
             });
         });
         this.setState({
@@ -187,8 +184,6 @@ class App extends Component {
                 return responseJson;
             }).catch(er => {
             console.log('====err Amount', er);
-
-            toastError(er, {autoClose: 5000});//TODO
         });
     }
 

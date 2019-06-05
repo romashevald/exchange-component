@@ -2,7 +2,6 @@
 // Select Menu
 // ------------------------------
 
-
 // wrapper around the menu
 
 .Select-menu-outer {
@@ -25,14 +24,11 @@
 	-webkit-overflow-scrolling: touch;
 }
 
-
 // wrapper
-
 .Select-menu {
 	max-height: ($select-menu-max-height - 2px);
 	overflow-y: auto;
 }
-
 
 // options
 
@@ -58,13 +54,7 @@
 		color: $select-option-focused-color;
 	}
 
-	&.is-disabled {
-		color: $select-option-disabled-color;
-		cursor: default;
-	}
-
 }
-
 
 // no results
 
