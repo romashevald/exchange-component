@@ -20,6 +20,7 @@
 	position: absolute;
 	top: 100%;
 	width: 100%;
+	overflow: hidden;
 	z-index: $select-menu-zindex;
 	-webkit-overflow-scrolling: touch;
 }

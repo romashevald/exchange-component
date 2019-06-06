@@ -324,7 +324,7 @@ class Select extends React.Component {
         if (this.props.onInputChange) {
             let nextState = this.props.onInputChange(newValue);
             // Note: != used deliberately here to catch undefined and null
-            if (nextState != null && typeof nextState !== 'object') {
+            if (nextState !== null && typeof nextState !== 'object') {
                 newValue = '' + nextState;
             }
         }
@@ -467,34 +467,6 @@ class Select extends React.Component {
         });
     }
 
-    addValue(value) {
-        let valueArray = this.getValueArray(this.props.value);
-        const visibleOptions = this._visibleOptions;
-        const lastValueIndex = visibleOptions.indexOf(value);
-        this.setValue(valueArray.concat(value));
-        if (visibleOptions.length - 1 === lastValueIndex) {
-            // the last option was selected; focus the second-last one
-            this.focusOption(visibleOptions[lastValueIndex - 1]);
-        } else if (visibleOptions.length > lastValueIndex) {
-            // focus the option below the selected one
-            this.focusOption(visibleOptions[lastValueIndex + 1]);
-        }
-    }
-
-    popValue() {
-        let valueArray = this.getValueArray(this.props.value);
-        if (!valueArray.length) return;
-        this.setValue(null);
-    }
-
-    getResetValue() {
-        if (this.props.resetValue !== undefined) {
-            return this.props.resetValue;
-        } else {
-            return null;
-        }
-    }
-
     focusOption(option) {
         this.setState({
             focusedOption: option
@@ -586,10 +558,6 @@ class Select extends React.Component {
         });
     }
 
-    getFocusedOption() {
-        return this._focusedOption;
-    }
-
     selectFocusedOption() {
         if (this._focusedOption) {
             return this.selectValue(this._focusedOption);
@@ -646,7 +614,6 @@ class Select extends React.Component {
             onBlur: this.handleInputBlur,
             onChange: this.handleInputChange,
             onFocus: this.handleInputFocus,
-            ref: ref => this.input = ref,
             role: 'combobox',
             tabIndex: this.props.tabIndex,
             value,
@@ -689,7 +656,7 @@ class Select extends React.Component {
         );
     }
 
-    renderArrow(valueArray, focusedOptionIndex) {
+    renderArrow() {
         if (!this.props.arrowRenderer) return;
 
         const onMouseDown = this.handleMouseDownOnArrow;
@@ -898,7 +865,6 @@ class Select extends React.Component {
     }
 
     render() {
-        const {isFocused} = this.state;
         let valueArray = this.getValueArray(this.props.value);
         this._visibleOptions = this.filterFlatOptions(null);
         let options = this.unflattenOptions(this._visibleOptions);

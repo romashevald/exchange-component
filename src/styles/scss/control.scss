@@ -106,7 +106,7 @@
   background-color: $select-input-bg;
   border-color: lighten($select-input-border-color, 5%) $select-input-border-color darken($select-input-border-color, 10%);
   border-radius: $select-input-border-radius;
-  border: $select-input-border-width solid $select-input-border-color;
+  border-left: $select-input-border-width solid $select-input-border-color;
   color: $select-text-color;
   cursor: default;
   display: table;
@@ -165,10 +165,8 @@
     display: inline-block;
     font-family: inherit;
     font-size: inherit;
-    // height: $select-input-internal-height;
     margin: 0;
     outline: none;
-    // padding: 0;
     line-height: 17px; /* For IE 8 compatibility */
     padding: (($select-input-internal-height - 14) / 2 - 2) 0 (($select-input-internal-height - 14) / 2 + 2); /* For IE 8 compatibility */
     -webkit-appearance: none;
@@ -183,7 +181,6 @@
 .Select-control:not(.is-searchable) > .Select-input {
   outline: none;
 }
-
 
 .Select .Select-aria-only {
   position: absolute;

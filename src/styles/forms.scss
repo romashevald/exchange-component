@@ -33,7 +33,7 @@ code {
   width: $forms-width;
   height: $forms-height;
   font-size: inherit;
-  border: 1px solid $select-input-border-color;
+  border: 3px solid $select-input-border-color;
   margin: 1rem;
   border-radius: $select-input-border-radius;
 }
@@ -45,7 +45,7 @@ code {
 
 .input-with-header {
   text-align: left;
-
+  margin: -1px;
   height: $forms-height;
   width: $forms-input-with-header;
 
@@ -53,10 +53,9 @@ code {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-
     height: $forms-height-text-header;
     color: #282c34;
-    background: $forms-color-background-color;
+    background: $forms-color-background-white;
     font-size: 1rem;
   }
 
@@ -66,15 +65,15 @@ code {
 }
 
 .select-form {
-  background: $forms-color-background-color;
+  background: $forms-color-background-white;
   height: $forms-height;
 }
 
 input[type=text] {
   font-size: calc(3px + 2vmin);
-  border: 1px solid $forms-color-background-color;
+  border: 1px solid $forms-color-background-white;
   width: 100%;
-  height: inherit;
+  height: $forms-height-num-input;
   display: inline-block;
-  box-sizing: border-box;
+  //box-sizing: border-box;
 }
