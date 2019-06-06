@@ -35,7 +35,7 @@ class App extends Component {
     componentDidUpdate(prevProps, prevState) {
         const {sendAmount, currenciesFrom, currenciesTo} = this.state;
         if (prevState.sendAmount !== sendAmount
-            || prevState.currenciesFrom.value !== currenciesFrom.value
+            || prevState.currenciesFrom !== currenciesFrom
             || prevState.currenciesTo !== currenciesTo) {
             this._getExchangeAmount();
         }
@@ -110,16 +110,16 @@ class App extends Component {
         this.setState({currenciesFrom: currenciesFrom.value});
     };
 
+    _handleChangeSelectTo = (currenciesTo) => {
+        this.setState({currenciesTo: currenciesTo.value});
+    };
+
     _addValueByState = (e) => {
         const el = e.target;
         let {name, value} = el;
         if (String(value).length === 0) {
             this.setState({[name]: 1});
         }
-    };
-
-    _handleChangeSelectTo = (currenciesTo) => {
-        this.setState({currenciesTo: currenciesTo.value});
     };
 
     _handleChange = e => {
@@ -156,7 +156,6 @@ class App extends Component {
     }
 
     _processingResponse = responseList => {
-        console.log('====responseList', responseList);
         const optionsCurrencies = [];
         responseList.forEach((v, i) => {
             optionsCurrencies.push({
@@ -175,18 +174,23 @@ class App extends Component {
 
     _getExchangeAmount() {
         const {sendAmount, currenciesFrom, currenciesTo} = this.state;
-        fetch(`https://changenow.io/api/v1/exchange-amount/${sendAmount}/${currenciesFrom}_${currenciesTo}`)
-            .then((response) => {
-                return response.json()
-            })
-            .then((responseJson) => {
-                this.setState({getAmount: responseJson.estimatedAmount});
-                return responseJson;
-            }).catch(er => {
-            console.log('====err Amount', er);
-        });
+        if (String(sendAmount).length > 0) {
+            fetch(`https://changenow.io/api/v1/exchange-amount/${sendAmount}/${currenciesFrom}_${currenciesTo}`)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((responseJson) => {
+                    if (responseJson.estimatedAmount) {
+                        this.setState({getAmount: responseJson.estimatedAmount});
+                    } else {
+                        this.setState({getAmount: responseJson.error});
+                    }
+                    return responseJson;
+                }).catch(er => {
+                console.log('====err Amount', er);
+            });
+        }
     }
-
-};
+}
 
 export default App;
