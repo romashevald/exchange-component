@@ -25,6 +25,7 @@ class App extends Component {
     }
 
     //a comment
+    //a comment 2
     componentDidMount() {
         this._getCurrencies();
     }
