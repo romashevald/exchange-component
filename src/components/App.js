@@ -24,6 +24,7 @@ class App extends Component {
         this._getExchangeAmount = this._getExchangeAmount.bind(this);
     }
 
+    //a comment
     componentDidMount() {
         this._getCurrencies();
     }
