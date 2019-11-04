@@ -48,6 +48,7 @@ class App extends Component {
     render() {
         const {sendAmount, getAmount, currenciesFrom, currenciesTo, optionsCurrencies} = this.state;
 //govno 1
+//govno 2
         return (
             <div className={UI.APP}>
                 <header className={UI.HEADER}>
